@@ -2,6 +2,7 @@
 """ """
 from lxml import html
 import requests
+import socket
 
 
 def get_vindy_deaths_daily():
@@ -53,7 +54,10 @@ def mailgun_send_email(text):
 
 if __name__ == "__main__":
     """ """
-    TEXT_FILE = 'deaths_daily.txt'
+    if socket.gethostname() in ['x551m',]:
+        TEXT_FILE = 'deaths_daily.txt'
+    else:
+        TEXT_FILE = '$OPENSHIFT_DATA_DIR/deaths_daily.txt'
 
     deaths_daily = get_vindy_deaths_daily()
     write_deaths_daily_to_file(TEXT_FILE)
