@@ -1,3 +1,8 @@
 #!/bin/bash
 
+#hour=$(date '+%H')
+#if [ $hour != 5 ]; then
+    #exit
+#fi
+
 python $OPENSHIFT_REPO_DIR/cron_app/vindy.py

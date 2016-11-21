@@ -49,7 +49,7 @@ def mailgun_send_email(text):
     """ """
     BASE_URL = 'https://api.mailgun.net/v3/'
     KEY = 'key-607eb7032024d299077fa0f7ef2d0b0b'
-    RECIPIENT = 'ljyahmail@yahoo.com'
+    RECIPIENT = 'julieandlee@yahoo.com'
     SANDBOX = 'sandboxaeec139a4e7a4845ad55e4fab04d4aad.mailgun.org'
 
     request_url = BASE_URL+ SANDBOX+ '/messages'
