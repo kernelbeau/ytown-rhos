@@ -23,6 +23,17 @@ def get_vindy_deaths_daily():
     return deaths_daily
 
 
+def prepare_email_text():
+    """ """
+    message = []
+
+    message.append(''.join(deaths_daily['cur_date'])+ '\n\n')
+    for name, trib in deaths_daily['notice']:
+        message.append('{0}{1}'.format(name, trib.encode('ascii','ignore').strip(' - '))+ '\n\n')
+
+    return message
+
+
 def write_deaths_daily_to_file(file_name):
     """ """
     with open(file_name, 'w') as f:
@@ -54,16 +65,17 @@ def mailgun_send_email(text):
 
 if __name__ == "__main__":
     """ """
-    if socket.gethostname() in ['x551m',]:
-        TEXT_FILE = 'deaths_daily.txt'
-    else:
-        TEXT_FILE = '${OPENSHIFT_TMP_DIR}vindy.txt'
+    #if socket.gethostname() in ['x551m',]:
+        #TEXT_FILE = 'deaths_daily.txt'
+    #else:
+        #TEXT_FILE = '${OPENSHIFT_TMP_DIR}vindy.txt'
 
     deaths_daily = get_vindy_deaths_daily()
-    write_deaths_daily_to_file(TEXT_FILE)
+    #write_deaths_daily_to_file(TEXT_FILE)
+    message = prepare_email_text()
 
-    f = open(TEXT_FILE, 'r')
-    message = f.read()
-    f.close()
+    #f = open(TEXT_FILE, 'r')
+    #message = f.read()
+    #f.close()
 
     mailgun_send_email(message)
