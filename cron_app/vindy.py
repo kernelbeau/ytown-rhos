@@ -65,17 +65,6 @@ def mailgun_send_email(text):
 
 if __name__ == "__main__":
     """ """
-    #if socket.gethostname() in ['x551m',]:
-        #TEXT_FILE = 'deaths_daily.txt'
-    #else:
-        #TEXT_FILE = '${OPENSHIFT_TMP_DIR}vindy.txt'
-
     deaths_daily = get_vindy_deaths_daily()
-    #write_deaths_daily_to_file(TEXT_FILE)
     message = prepare_email_text()
-
-    #f = open(TEXT_FILE, 'r')
-    #message = f.read()
-    #f.close()
-
     mailgun_send_email(message)
