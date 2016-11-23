@@ -1,0 +1,13 @@
+#!/bin/bash
+
+hour=$(date '+%H')
+
+if [ $hour -eq 11 -o $hour -eq 23 ]; then
+
+    GOOGLE_TRANSLATE='https://translate.google.com/translate?u='
+    MY_SITE='http://ytown-kernelbeau.rhcloud.com/'
+
+    curl $GOOGLE_TRANSLATE$MY_SITE
+fi
+
+exit

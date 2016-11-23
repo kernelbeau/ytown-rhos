@@ -2,7 +2,6 @@
 """ """
 from lxml import html
 import requests
-import socket
 
 
 def get_vindy_deaths_daily():
@@ -23,29 +22,19 @@ def get_vindy_deaths_daily():
     return deaths_daily
 
 
-def prepare_email_text():
+def format_email_text(deaths_daily):
     """ """
     message = []
 
-    message.append(''.join(deaths_daily['cur_date'])+ '\n\n')
+    message.append('Youngstown Vindicator - Death Notices')
+    message.append(''.join(deaths_daily['cur_date'])+ '\n')
     for name, trib in deaths_daily['notice']:
-        message.append('{0}{1}'.format(name, trib.encode('ascii','ignore').strip(' - '))+ '\n\n')
+        message.append('{0} {1}'.format(name, trib.encode('ascii','ignore').strip(' - '))+ '\n')
 
     return message
 
 
-def write_deaths_daily_to_file(file_name):
-    """ """
-    with open(file_name, 'w') as f:
-        f.write(''.join(deaths_daily['cur_date'])+ '\n\n')
-        for name, trib in deaths_daily['notice']:
-            f.write('{0} {1}\n\n'.format(name, trib.encode('ascii', 'ignore').strip(' - ')))
-    f.close()
-
-    return
-
-
-def mailgun_send_email(text):
+def mailgun_send_email(email_text):
     """ """
     BASE_URL = 'https://api.mailgun.net/v3/'
     KEY = 'key-607eb7032024d299077fa0f7ef2d0b0b'
@@ -57,8 +46,8 @@ def mailgun_send_email(text):
     request = requests.post(request_url, auth=('api', KEY), data={
         'from': 'Y-town <mailgun@'+ SANDBOX+ '>',
         'to': RECIPIENT,
-        'subject': 'Youngstown Death Record',
-        'text': text
+        'subject': 'Vindy Deaths - '+ email_text[1].strip(' \n'),
+        'text': email_text
     })
     return
 
@@ -66,5 +55,5 @@ def mailgun_send_email(text):
 if __name__ == "__main__":
     """ """
     deaths_daily = get_vindy_deaths_daily()
-    message = prepare_email_text()
+    message = format_email_text(deaths_daily)
     mailgun_send_email(message)
